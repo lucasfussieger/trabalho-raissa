@@ -43,7 +43,7 @@
   "servesCuisine": ["Italiana", "Brasileira", "Galeteria"],
   "priceRange": "R$$",
   "telephone": "+55-47-3248-8573",
-  "sameAs": ["https://www.instagram.com/galeteriafrassini"],
+  "sameAs": ["https://www.instagram.com/galeteriafrassini", "https://maps.google.com/?cid=18179979987238950114"],
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Av. Min. Victor Konder, 300",
@@ -52,7 +52,7 @@
     "postalCode": "88301-700",
     "addressCountry": "BR"
   },
-  "geo": { "@type": "GeoCoordinates", "latitude": -26.9055, "longitude": -48.6580 },
+  "geo": { "@type": "GeoCoordinates", "latitude": -26.9097236, "longitude": -48.6566725 },
   "openingHoursSpecification": [
     { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "11:30", "closes": "14:30" }
   ],
@@ -184,7 +184,6 @@ section{padding-block:var(--sec)}
   .r{opacity:1; transform:none; transition:none}
   .load{opacity:1; animation:none}
   .btn:hover{transform:none}
-  .video-fundo{display:none}
 }
 
 /* ============================================================
@@ -244,17 +243,11 @@ section{padding-block:var(--sec)}
   :root{--header:5.8rem}
 }
 
-/* filete tricolor como divisor de secao */
-.tri-rule{display:flex; gap:5px; width:104px; margin:0 auto; opacity:.9}
-.tri-rule i{display:block; height:3px; flex:1}
-.tri-rule i:nth-child(1){background:var(--verde)}
-.tri-rule i:nth-child(2){background:var(--branco)}
-.tri-rule i:nth-child(3){background:var(--vermelho)}
 
 /* ============================================================
-   FUNDO EM VIDEO (hero e eventos)
+   MIDIA DE FUNDO (foto na historia, video no hero e nos eventos)
    ============================================================ */
-.video-fundo{
+.midia-fundo{
   position:absolute; inset:0; z-index:-2;
   width:100vw; max-width:none; height:100%;
   object-fit:cover; object-position:center;
@@ -309,15 +302,29 @@ section{padding-block:var(--sec)}
 /* ============================================================
    3. NOSSA HISTORIA
    ============================================================ */
-.about-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(2rem,5vw,5rem); align-items:center}
-.about-media .ph{aspect-ratio:4/3}
-.about-copy > * + *{margin-top:1.4rem}
-.quote{
-  font-family:var(--serif); font-weight:400; font-size:clamp(1.25rem,1.9vw,1.6rem); line-height:1.35;
-  border-left:2px solid var(--verde); padding-left:1.4rem; max-width:34ch;
-  margin:2.2rem 0 0;
+.sobre{
+  position:relative; isolation:isolate; overflow:hidden;
+  color:var(--branco); padding-block:clamp(5rem,10vw,8.5rem);
 }
-@media (max-width:900px){ .about-grid{grid-template-columns:1fr} }
+.sobre::after{
+  content:""; position:absolute; inset:0; z-index:-1;
+  background:
+    /* sombra uniforme sobre a foto */
+    linear-gradient(rgba(8,6,2,.50), rgba(8,6,2,.50)),
+    /* reforco no topo e na base */
+    linear-gradient(180deg, rgba(8,6,2,.70) 0%, rgba(8,6,2,.26) 45%, rgba(8,6,2,.76) 100%);
+}
+/* o texto fica na metade direita para nao cobrir o retrato emoldurado */
+.sobre-copy{max-width:56ch; margin-left:auto}
+.sobre-copy > * + *{margin-top:1.4rem}
+.sobre h2{text-shadow:0 1px 24px rgba(0,0,0,.4)}
+.sobre .body{color:var(--branco); text-shadow:0 1px 18px rgba(0,0,0,.45)}
+.quote{
+  font-family:var(--serif); font-weight:400; font-size:clamp(1.3rem,2vw,1.7rem); line-height:1.35;
+  border-left:2px solid var(--branco); padding-left:1.4rem; max-width:34ch;
+  margin:2.4rem 0 0; text-shadow:0 1px 18px rgba(0,0,0,.45);
+}
+@media (max-width:900px){ .sobre-copy{margin-left:0; max-width:none} }
 
 /* ============================================================
    CARROSSEL HORIZONTAL
@@ -425,17 +432,9 @@ section{padding-block:var(--sec)}
 .hours li span:last-child{color:var(--ink)}
 .map{
   aspect-ratio:4/3; border:1px solid var(--line); border-radius:2px;
-  position:relative; overflow:hidden;
-  background:
-    linear-gradient(0deg, transparent 49.6%, var(--line) 49.6%, var(--line) 50.4%, transparent 50.4%),
-    linear-gradient(90deg, transparent 49.6%, var(--line) 49.6%, var(--line) 50.4%, transparent 50.4%),
-    linear-gradient(38deg, transparent 47.4%, var(--line-2) 47.4%, var(--line-2) 52.6%, transparent 52.6%),
-    var(--card);
-  background-size:120px 120px, 120px 120px, auto, auto;
+  overflow:hidden; background:var(--card);
 }
-.pin{position:absolute; left:50%; top:50%; transform:translate(-50%,-100%); display:flex; flex-direction:column; align-items:center; gap:.5rem}
-.pin i{width:13px; height:13px; border-radius:50%; background:var(--vermelho); box-shadow:0 0 0 6px color-mix(in srgb, var(--vermelho) 20%, transparent)}
-.pin em{font-style:normal; font-size:.75rem; letter-spacing:.06em; background:var(--bg); border:1px solid var(--line); padding:.3rem .7rem; white-space:nowrap}
+.map iframe{width:100%; height:100%; border:0; display:block}
 .local-cta{display:flex; flex-wrap:wrap; gap:.85rem; margin-top:2.2rem}
 @media (max-width:900px){ .local-grid{grid-template-columns:1fr} }
 
@@ -512,7 +511,7 @@ section{padding-block:var(--sec)}
 
 <!-- ========== 1. HERO ========== -->
 <section class="hero" aria-labelledby="h-hero">
-  <video class="video-fundo" autoplay muted loop playsinline preload="metadata"
+  <video class="midia-fundo video-fundo" autoplay muted loop playsinline preload="metadata"
          poster="web/prato-2.jpg" aria-hidden="true" tabindex="-1">
     <source src="hero.MP4" type="video/mp4">
   </video>
@@ -540,13 +539,11 @@ section{padding-block:var(--sec)}
 </section>
 
 <!-- ========== 3. NOSSA HISTÓRIA ========== -->
-<section id="sobre" class="wrap" aria-labelledby="h-sobre">
-  <div class="about-grid">
-    <div class="about-media r">
-      <img class="ph" src="web/historia.jpg" alt="Retrato antigo da família Frassini emoldurado no salão do restaurante" width="1700" height="1134" loading="lazy" decoding="async">
-    </div>
+<section id="sobre" class="sobre" aria-labelledby="h-sobre">
+  <img class="midia-fundo" src="web/historia.jpg" alt="Retrato antigo da família Frassini emoldurado no salão do restaurante" width="1700" height="1134" loading="lazy" decoding="async">
 
-    <div class="about-copy">
+  <div class="wrap">
+    <div class="sobre-copy">
       <h2 id="h-sobre" class="r">Uma tradição que atravessa gerações</h2>
       <p class="body r" style="--d:100ms">Em 1986, Renato e Nadia Frassini deram início a uma história marcada pelo amor à família e à culinária italiana. Inspirada nas tradições da Serra Gaúcha, a Frassini chegou a Itajaí levando receitas e sabores que conquistaram a cidade.</p>
       <p class="body r" style="--d:180ms">Hoje, a Galeteria Frassini preserva essa herança por meio de sua gastronomia, do acolhimento e, principalmente, do tradicional Galeto ao Primo Canto.</p>
@@ -554,8 +551,6 @@ section{padding-block:var(--sec)}
     </div>
   </div>
 </section>
-
-<div class="wrap"><div class="tri-rule r"><i></i><i></i><i></i></div></div>
 
 <!-- ========== 4. NOSSA COZINHA ========== -->
 <section id="cardapio" class="cozinha" aria-labelledby="h-cardapio">
@@ -565,7 +560,7 @@ section{padding-block:var(--sec)}
       <a href="https://wa.me/554732488573?text=Ol%C3%A1%21%20Gostaria%20de%20receber%20o%20card%C3%A1pio%20da%20Galeteria%20Frassini." class="link r" style="--d:120ms" target="_blank" rel="noopener">Ver o cardápio completo</a>
     </div>
 
-    <div class="carrossel r" data-carrossel>
+    <div class="carrossel r" data-carrossel data-infinito data-auto="5000">
       <button class="seta ant" type="button" aria-label="Ver fotos anteriores">
         <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
       </button>
@@ -600,7 +595,7 @@ section{padding-block:var(--sec)}
 
 <!-- ========== 5. EVENTOS ========== -->
 <section id="eventos" class="eventos" aria-labelledby="h-eventos">
-  <video class="video-fundo" autoplay muted loop playsinline preload="none"
+  <video class="midia-fundo video-fundo" autoplay muted loop playsinline preload="none"
          poster="web/ambiente-2.jpg" aria-hidden="true" tabindex="-1">
     <source src="ambiente%20-%20eventos.MP4" type="video/mp4">
   </video>
@@ -610,7 +605,7 @@ section{padding-block:var(--sec)}
     <p class="body r" style="--d:120ms">Na Galeteria Frassini, momentos especiais ganham um sabor ainda mais marcante. O restaurante oferece a possibilidade de reservas para eventos privados, proporcionando um espaço acolhedor para celebrar com família, amigos ou convidados especiais. Com capacidade para até 108 pessoas, é o cenário ideal para confraternizações, aniversários, encontros corporativos e outras ocasiões que merecem ser celebradas à mesa.</p>
     <a href="https://wa.me/554732488573?text=Ol%C3%A1%21%20Gostaria%20de%20agendar%20um%20evento%20na%20Galeteria%20Frassini." class="btn r" style="--d:220ms" target="_blank" rel="noopener">Agende o seu evento</a>
 
-    <div class="carrossel r" data-carrossel>
+    <div class="carrossel r" data-carrossel data-infinito data-auto="5000">
       <button class="seta ant" type="button" aria-label="Ver fotos anteriores">
         <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
       </button>
@@ -640,10 +635,10 @@ section{padding-block:var(--sec)}
   <div class="wrap">
     <div class="sec-head">
       <h2 id="h-aval" class="r">O que dizem sobre nós</h2>
-      <a href="https://www.google.com/maps" class="link r" style="--d:120ms" target="_blank" rel="noopener">Ler as 1.247 avaliações</a>
+      <a href="https://maps.google.com/?cid=18179979987238950114" class="link r" style="--d:120ms" target="_blank" rel="noopener">Ler as 1.247 avaliações</a>
     </div>
 
-    <div class="carrossel r" data-carrossel>
+    <div class="carrossel r" data-carrossel data-infinito>
       <button class="seta ant" type="button" aria-label="Ver avaliações anteriores">
         <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
       </button>
@@ -719,13 +714,15 @@ section{padding-block:var(--sec)}
       </div>
 
       <div class="local-cta r" style="--d:280ms">
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Av.+Min.+Victor+Konder,+300,+Itaja%C3%AD,+SC" class="btn" target="_blank" rel="noopener">Como chegar</a>
+        <a href="https://maps.google.com/?cid=18179979987238950114" class="btn" target="_blank" rel="noopener">Como chegar</a>
         <a href="https://wa.me/554732488573?text=Ol%C3%A1%21%20Gostaria%20de%20reservar%20uma%20mesa%20na%20Galeteria%20Frassini." class="btn ghost" target="_blank" rel="noopener">Reservar pelo WhatsApp</a>
       </div>
     </div>
 
-    <div class="map r" style="--d:140ms" role="img" aria-label="Mapa com a localização da Galeteria Frassini na Av. Min. Victor Konder, 300, Fazenda, Itajaí">
-      <div class="pin"><em>Galeteria Frassini</em><i></i></div>
+    <div class="map r" style="--d:140ms">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3557.8037242557716!2d-48.65667252427234!3d-26.909723576648872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94d8cc0989639a3b%3A0xfc4c437a0b1694e2!2sGaleteria%20Frassini!5e0!3m2!1spt-BR!2sbr!4v1788373539101!5m2!1spt-BR!2sbr"
+              title="Mapa com a localização da Galeteria Frassini na Av. Min. Victor Konder, 300, Fazenda, Itajaí"
+              loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
     </div>
   </div>
 </section>
@@ -811,11 +808,25 @@ section{padding-block:var(--sec)}
   addEventListener('resize', marca, { passive: true });
 
   // ---------- carrosseis horizontais ----------
+  var semMovimento = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // quem pediu menos movimento fica com o quadro parado do poster
+  if (semMovimento) {
+    Array.prototype.forEach.call(document.querySelectorAll('video.video-fundo'), function (v) {
+      v.removeAttribute('autoplay');
+      v.pause();
+    });
+  }
+
   Array.prototype.forEach.call(document.querySelectorAll('[data-carrossel]'), function (car) {
     var trilho = car.querySelector('.trilho');
     var ant = car.querySelector('.seta.ant');
     var prox = car.querySelector('.seta.prox');
     if (!trilho || !ant || !prox) return;
+
+    var infinito = car.hasAttribute('data-infinito');
+    var intervalo = parseInt(car.getAttribute('data-auto') || '0', 10);
+    var originais = Array.prototype.slice.call(trilho.children);
 
     var passo = function () {
       var primeiro = trilho.firstElementChild;
@@ -823,18 +834,103 @@ section{padding-block:var(--sec)}
       var estilo = getComputedStyle(trilho);
       return primeiro.getBoundingClientRect().width + parseFloat(estilo.columnGap || estilo.gap || 0);
     };
+    var bloco = function () { return passo() * originais.length; };
 
-    ant.addEventListener('click', function () { trilho.scrollBy({ left: -passo(), behavior: 'smooth' }); });
-    prox.addEventListener('click', function () { trilho.scrollBy({ left: passo(), behavior: 'smooth' }); });
+    // mexe no scroll sem animar, para o salto do loop nao aparecer
+    var semSuave = function (fn) {
+      var suave = trilho.style.scrollBehavior;
+      var encaixe = trilho.style.scrollSnapType;
+      trilho.style.scrollBehavior = 'auto';
+      trilho.style.scrollSnapType = 'none';   // senao o encaixe desfaz o salto
+      fn();
+      void trilho.offsetHeight;
+      trilho.style.scrollBehavior = suave;
+      trilho.style.scrollSnapType = encaixe;
+    };
+
+    // ---- giro sem fim: uma copia antes e outra depois, comecando no meio ----
+    if (infinito && originais.length > 1) {
+      var copia = function (n) {
+        var c;
+        if (n.tagName === 'VIDEO') {
+          // a copia do video vira so o quadro do poster, para nao rodar tres videos
+          c = document.createElement('img');
+          c.className = n.className;
+          c.src = n.getAttribute('poster') || '';
+          c.alt = '';
+        } else {
+          c = n.cloneNode(true);
+        }
+        c.setAttribute('aria-hidden', 'true');
+        return c;
+      };
+      var frente = document.createDocumentFragment();
+      originais.forEach(function (n) { frente.appendChild(copia(n)); });
+      trilho.insertBefore(frente, trilho.firstChild);
+      originais.forEach(function (n) { trilho.appendChild(copia(n)); });
+      requestAnimationFrame(function () { semSuave(function () { trilho.scrollLeft = bloco(); }); });
+    }
+
+    var reposicionar = function () {
+      if (!infinito || originais.length < 2) return;
+      var L = bloco();
+      if (L <= 0) return;
+      if (trilho.scrollLeft >= 2 * L - 1) semSuave(function () { trilho.scrollLeft -= L; });
+      else if (trilho.scrollLeft <= 1) semSuave(function () { trilho.scrollLeft += L; });
+    };
 
     var estado = function () {
+      if (infinito) return;               // sem fim: as setas nunca desligam
       var fim = trilho.scrollWidth - trilho.clientWidth - 2;
       ant.disabled = trilho.scrollLeft <= 2;
       prox.disabled = trilho.scrollLeft >= fim;
     };
     estado();
-    trilho.addEventListener('scroll', estado, { passive: true });
+    trilho.addEventListener('scroll', function () { reposicionar(); estado(); }, { passive: true });
     addEventListener('resize', estado, { passive: true });
+
+    // ---- passagem automatica ----
+    var relogio = null, espera = null, visivel = false, parado = false;
+
+    var avancar = function () {
+      if (!infinito && trilho.scrollLeft >= trilho.scrollWidth - trilho.clientWidth - 2) {
+        trilho.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        trilho.scrollBy({ left: passo(), behavior: 'smooth' });
+      }
+    };
+    var ligar = function () {
+      if (relogio || !intervalo || semMovimento || parado || !visivel || document.hidden) return;
+      relogio = setInterval(avancar, intervalo);
+    };
+    var desligar = function () { clearInterval(relogio); relogio = null; };
+    // uma interacao pausa e devolve o automatico um ciclo depois
+    var pausar = function () {
+      parado = true; desligar();
+      clearTimeout(espera);
+      espera = setTimeout(function () { parado = false; ligar(); }, (intervalo || 5000) * 1.6);
+    };
+
+    ant.addEventListener('click', function () { trilho.scrollBy({ left: -passo(), behavior: 'smooth' }); pausar(); });
+    prox.addEventListener('click', function () { trilho.scrollBy({ left: passo(), behavior: 'smooth' }); pausar(); });
+
+    if (intervalo && !semMovimento) {
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          visivel = es[0].isIntersecting;
+          if (visivel) ligar(); else desligar();
+        }, { threshold: 0.25 }).observe(car);
+      } else {
+        visivel = true; ligar();
+      }
+      car.addEventListener('mouseenter', desligar);
+      car.addEventListener('mouseleave', ligar);
+      trilho.addEventListener('pointerdown', pausar);
+      trilho.addEventListener('wheel', pausar, { passive: true });
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) desligar(); else ligar();
+      });
+    }
   });
 })();
 </script>
