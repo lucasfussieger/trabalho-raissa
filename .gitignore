@@ -1,0 +1,22 @@
+# Fotos originais da camera (5471x3648, ~286 MB no total).
+# O site usa as versoes otimizadas em web/, que sobem normalmente.
+# A barra no inicio prende o padrao a raiz, senao ele pegaria web/ tambem.
+/ambiente*.jpeg
+/ambiente*.jpg
+/prato*.jpeg
+/prato*.jpg
+/uniforme.jpeg
+/história.jpeg
+/historia.jpeg
+
+# Copia identica do hero.MP4
+/IMG_8170.MP4
+
+# Primeiras fotos, substituidas pelas de web/
+/ambiente/
+/pratos/
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
