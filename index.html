@@ -99,7 +99,7 @@
   --creme:#F4F1ED;
 
   /* Imbue so no titulo do hero, com eixo optico travado em 72 */
-  --display:"Imbue", "Playfair Display", Georgia, serif;
+  --display:"Imbue", Georgia, serif;
   /* Coco Gothic no resto. Jost e o substituto ate os arquivos chegarem */
   --sans:"Coco Gothic", "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
   --serif-marca:"Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
@@ -131,11 +131,14 @@ img,video{max-width:100%; display:block}
 a{color:inherit}
 
 h1,h2,h3{margin:0; text-wrap:balance}
-/* titulo do hero: Imbue no tamanho optico 72 */
+/* titulo do hero: Imbue, tamanho optico 72 e peso 700.
+   Os dois eixos vao declarados juntos: se so o opsz aparecer aqui,
+   alguns navegadores devolvem o peso para o padrao da fonte. */
 h1{
-  font-family:var(--display); font-weight:700;
-  font-variation-settings:"opsz" 72;
+  font-family:var(--display);
   font-optical-sizing:none;
+  font-variation-settings:"opsz" 72, "wght" 700;
+  font-weight:700;
   font-size:clamp(2.5rem, 5.4vw, 4.4rem);
   letter-spacing:-.015em; line-height:1.04;
 }
@@ -369,6 +372,7 @@ section{padding-block:var(--sec)}
   position:relative; isolation:isolate; overflow:hidden;
   color:var(--branco); padding-block:clamp(5rem,10vw,8.5rem);
 }
+.sobre .midia-fundo{object-position:center 46%}
 .sobre::after{
   content:""; position:absolute; inset:0; z-index:-1;
   background:
@@ -604,7 +608,7 @@ section{padding-block:var(--sec)}
 
 <!-- ========== 3. NOSSA HISTÓRIA ========== -->
 <section id="sobre" class="sobre" aria-labelledby="h-sobre">
-  <img class="midia-fundo" src="web/historia.jpg" alt="Retrato antigo da família Frassini emoldurado no salão do restaurante" width="1700" height="1134" loading="lazy" decoding="async">
+  <img class="midia-fundo" src="web/familia1.jpg" alt="Retrato sepia dos antepassados da família Frassini, emoldurado no salão do restaurante" width="1024" height="1280" loading="lazy" decoding="async">
 
   <div class="wrap">
     <div class="sobre-copy">
