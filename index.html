@@ -27,15 +27,19 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Imbue:opsz,wght@10..100,100..900&family=Jost:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Jost:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 
-<!-- Coco Gothic e fonte comercial da Zetafonts e nao esta no Google Fonts.
+<!-- Coco Gothic e fonte comercial da Zetafonts e nao existe no Google Fonts.
      Coloque os arquivos em fonts/ e tire o comentario abaixo: a Jost sai
      de cena sozinha, porque a Coco Gothic vem primeiro na pilha.
 <style>
   @font-face{
     font-family:"Coco Gothic"; font-style:normal; font-weight:400; font-display:swap;
     src:url("fonts/CocoGothic.woff2") format("woff2");
+  }
+  @font-face{
+    font-family:"Coco Gothic"; font-style:italic; font-weight:400; font-display:swap;
+    src:url("fonts/CocoGothic-Italic.woff2") format("woff2");
   }
   @font-face{
     font-family:"Coco Gothic"; font-style:normal; font-weight:700; font-display:swap;
@@ -98,8 +102,6 @@
   --marrom:#623E2A;
   --creme:#F4F1ED;
 
-  /* Imbue so no titulo do hero, com eixo optico travado em 72 */
-  --display:"Imbue", Georgia, serif;
   /* Coco Gothic no resto. Jost e o substituto ate os arquivos chegarem */
   --sans:"Coco Gothic", "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
   --serif-marca:"Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
@@ -131,16 +133,11 @@ img,video{max-width:100%; display:block}
 a{color:inherit}
 
 h1,h2,h3{margin:0; text-wrap:balance}
-/* titulo do hero: Imbue, tamanho optico 72 e peso 700.
-   Os dois eixos vao declarados juntos: se so o opsz aparecer aqui,
-   alguns navegadores devolvem o peso para o padrao da fonte. */
+/* titulo do hero: mesma fonte e mesmo peso dos subtitulos de secao */
 h1{
-  font-family:var(--display);
-  font-optical-sizing:none;
-  font-variation-settings:"opsz" 72, "wght" 700;
-  font-weight:700;
+  font-family:var(--sans); font-weight:700;
   font-size:clamp(2.5rem, 5.4vw, 4.4rem);
-  letter-spacing:-.015em; line-height:1.04;
+  letter-spacing:-.02em; line-height:1.06;
 }
 /* subtitulos de secao: Coco Gothic negrito */
 h2{
@@ -372,7 +369,9 @@ section{padding-block:var(--sec)}
   position:relative; isolation:isolate; overflow:hidden;
   color:var(--branco); padding-block:clamp(5rem,10vw,8.5rem);
 }
-.sobre .midia-fundo{object-position:center 46%}
+/* desfoque leve para o texto ganhar o primeiro plano.
+   A escala compensa as bordas que o blur deixa transparentes. */
+.sobre .midia-fundo{object-position:center 46%; filter:blur(4px); transform:scale(1.05)}
 .sobre::after{
   content:""; position:absolute; inset:0; z-index:-1;
   background:
@@ -430,6 +429,36 @@ section{padding-block:var(--sec)}
   display:flex; justify-content:space-between; align-items:flex-end;
   gap:2rem; flex-wrap:wrap; margin-bottom:clamp(2.2rem,4.5vw,3.2rem);
 }
+/* carrossel menor a esquerda, cardapio a direita */
+/* minmax(0,...) impede o cardapio de tomar a largura toda: sem isso o
+   conteudo multicoluna dele impoe uma largura minima e esmaga o carrossel,
+   que tem overflow-x e por isso aceita encolher ate zero. */
+.cozinha-grid{
+  display:grid; grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);
+  gap:clamp(2rem,4vw,4rem); align-items:start;
+}
+.cozinha-grid > *{min-width:0}
+.cozinha-grid .trilho > *{flex:0 0 clamp(190px, 21vw, 300px)}
+
+.cardapio{columns:2; column-gap:clamp(1.5rem,2.5vw,2.5rem)}
+.cardapio-bloco{break-inside:avoid; margin-bottom:1.6rem}
+.cardapio-bloco h3{
+  font-family:var(--sans); font-weight:700; font-size:.9375rem;
+  letter-spacing:.01em; line-height:1.3; margin-bottom:.6rem;
+  padding-bottom:.5rem; border-bottom:1px solid rgba(98,62,42,.22);
+}
+.cardapio-bloco ul{list-style:none; margin:0; padding:0}
+.cardapio-bloco li{font-size:.875rem; font-weight:400; line-height:1.5; padding:.16rem 0; opacity:.82}
+.cardapio-nota{
+  column-span:all; margin-top:.4rem; padding-top:1rem;
+  border-top:1px solid rgba(98,62,42,.18);
+  font-style:italic; font-size:.8125rem; opacity:.7;
+}
+@media (max-width:960px){
+  .cozinha-grid{grid-template-columns:1fr; gap:clamp(2.5rem,6vw,3.5rem)}
+  .cozinha-grid .trilho > *{flex:0 0 clamp(230px, 46vw, 320px)}
+}
+@media (max-width:520px){ .cardapio{columns:1} }
 
 /* ============================================================
    5. EVENTOS
@@ -438,12 +467,48 @@ section{padding-block:var(--sec)}
   position:relative; isolation:isolate; overflow:hidden;
   color:var(--branco); padding-block:clamp(5rem,10vw,8rem);
 }
+.eventos .midia-fundo{filter:blur(5px); transform:scale(1.06)}
+/* mais escuro a esquerda, onde fica o texto, e a foto respira a direita */
 .eventos::after{
   content:""; position:absolute; inset:0; z-index:-1;
   background:
-    linear-gradient(rgba(8,6,2,.52), rgba(8,6,2,.52)),
-    linear-gradient(180deg, rgba(8,6,2,.72) 0%, rgba(8,6,2,.30) 40%, rgba(8,6,2,.78) 100%);
+    linear-gradient(90deg,
+      rgba(8,6,2,.93) 0%,
+      rgba(8,6,2,.88) 28%,
+      rgba(8,6,2,.62) 58%,
+      rgba(8,6,2,.34) 82%,
+      rgba(8,6,2,.26) 100%),
+    linear-gradient(180deg, rgba(8,6,2,.50) 0%, rgba(8,6,2,.12) 38%, rgba(8,6,2,.52) 100%);
 }
+@media (max-width:900px){
+  /* na vertical o texto ocupa a largura toda, entao o escuro precisa ser parelho */
+  .eventos::after{
+    background:
+      linear-gradient(rgba(8,6,2,.72), rgba(8,6,2,.72)),
+      linear-gradient(180deg, rgba(8,6,2,.50) 0%, rgba(8,6,2,.20) 40%, rgba(8,6,2,.55) 100%);
+  }
+}
+
+/* cards de tipos de evento */
+.cards-evento{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(.85rem,1.6vw,1.25rem);
+  margin-top:clamp(2.2rem,4vw,3rem);
+}
+.card-evento{
+  background:rgba(244,241,237,.09);
+  border:1px solid rgba(244,241,237,.24);
+  border-radius:2px; padding:clamp(1.25rem,2vw,1.6rem);
+  backdrop-filter:blur(6px);
+  transition:background .4s var(--ease), border-color .4s var(--ease), transform .4s var(--ease);
+}
+.card-evento:hover{background:rgba(244,241,237,.15); border-color:rgba(244,241,237,.45); transform:translateY(-3px)}
+.card-evento h3{
+  font-family:var(--sans); font-weight:700; font-size:1rem;
+  letter-spacing:.005em; margin-bottom:.55rem; color:var(--branco);
+}
+.card-evento p{font-size:.8125rem; line-height:1.55; color:var(--branco); opacity:.8}
+@media (max-width:900px){ .cards-evento{grid-template-columns:1fr 1fr} }
+@media (max-width:520px){ .cards-evento{grid-template-columns:1fr} }
 .eventos h2{max-width:16ch; text-shadow:0 1px 24px rgba(0,0,0,.4)}
 .eventos .body{
   color:var(--branco); max-width:60ch; margin-top:1.6rem;
@@ -493,6 +558,11 @@ section{padding-block:var(--sec)}
 }
 .info-block p{color:var(--ink)}
 .info-block p + p{margin-top:.3rem}
+.destaque{
+  font-size:clamp(1rem,1.25vw,1.125rem); font-weight:500; line-height:1.55;
+  max-width:46ch; margin-top:1.4rem;
+  border-left:2px solid var(--marrom); padding-left:1.1rem;
+}
 .tel{text-decoration:none; border-bottom:1px solid var(--line); transition:border-color .3s var(--ease)}
 .tel:hover{border-color:var(--ink)}
 .hours{list-style:none; margin:0; padding:0}
@@ -585,10 +655,10 @@ section{padding-block:var(--sec)}
   </video>
 
   <div class="hero-inner">
-    <h1 id="h-hero" class="load" style="--d:120ms">Mais de 20 anos de tradição italiana, no coração de Itajaí.</h1>
-    <p class="lead load" style="--d:260ms">Desde 2002 em Itajaí, a família Frassini serve a culinária italiana que aprendeu na Serra Gaúcha, com o tradicional Galeto ao Primo Canto no centro da mesa.</p>
+    <h1 id="h-hero" class="load" style="--d:120ms">Restaurante italiano em Itajaí com mais de 20 anos de tradição.</h1>
+    <p class="lead load" style="--d:260ms">Desde 2002, a família Frassini preserva em Itajaí os sabores da culinária italiana da Serra Gaúcha. Especializada em Galeto ao Primo Canto, a casa também oferece buffet e massas artesanais em um ambiente acolhedor e familiar.</p>
     <div class="hero-cta load" style="--d:380ms">
-      <a href="https://wa.me/554732488573?text=Ol%C3%A1%21%20Gostaria%20de%20reservar%20uma%20mesa%20na%20Galeteria%20Frassini." class="btn" target="_blank" rel="noopener">Reservar mesa</a>
+      <a href="https://wa.me/554732488573?text=Ol%C3%A1%21%20Gostaria%20de%20reservar%20uma%20mesa%20na%20Galeteria%20Frassini." class="btn" target="_blank" rel="noopener">Reserve uma mesa</a>
       <a href="#cardapio" class="btn ghost">Ver o cardápio</a>
     </div>
   </div>
@@ -608,13 +678,13 @@ section{padding-block:var(--sec)}
 
 <!-- ========== 3. NOSSA HISTÓRIA ========== -->
 <section id="sobre" class="sobre" aria-labelledby="h-sobre">
-  <img class="midia-fundo" src="web/familia1.jpg" alt="Retrato sepia dos antepassados da família Frassini, emoldurado no salão do restaurante" width="1024" height="1280" loading="lazy" decoding="async">
+  <img class="midia-fundo" src="web/historia.jpg" alt="Retrato antigo da família Frassini emoldurado na parede do salão" width="1700" height="1134" loading="lazy" decoding="async">
 
   <div class="wrap">
     <div class="sobre-copy">
       <h2 id="h-sobre" class="r">Uma tradição que atravessa gerações</h2>
       <p class="body r" style="--d:100ms">Em 1986, Renato e Nadia Frassini deram início a uma história marcada pelo amor à família e à culinária italiana. Inspirada nas tradições da Serra Gaúcha, a Frassini chegou a Itajaí levando receitas e sabores que conquistaram a cidade.</p>
-      <p class="body r" style="--d:180ms">Hoje, a Galeteria Frassini preserva essa herança por meio de sua gastronomia, do acolhimento e, principalmente, do tradicional Galeto ao Primo Canto.</p>
+      <p class="body r" style="--d:180ms">Hoje, a Galeteria Frassini preserva essa herança por meio de sua gastronomia, do acolhimento e, principalmente, do tradicional Galeto ao Primo Canto, um dos símbolos da culinária italiana da casa.</p>
       <blockquote class="quote r" style="--d:240ms">Mais do que uma refeição, uma tradição de família.</blockquote>
     </div>
   </div>
@@ -628,6 +698,8 @@ section{padding-block:var(--sec)}
       <a href="https://wa.me/554732488573?text=Ol%C3%A1%21%20Gostaria%20de%20receber%20o%20card%C3%A1pio%20da%20Galeteria%20Frassini." class="link r" style="--d:120ms" target="_blank" rel="noopener">Ver o cardápio completo</a>
     </div>
 
+    <div class="cozinha-grid">
+    <div>
     <div class="carrossel r" data-carrossel data-infinito data-auto="5000">
       <button class="seta ant" type="button" aria-label="Ver fotos anteriores">
         <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
@@ -658,19 +730,84 @@ section{padding-block:var(--sec)}
     </div>
 
     <p class="dica-arraste r">Arraste para o lado</p>
+    </div>
+
+      <div class="cardapio r" style="--d:120ms">
+        <div class="cardapio-bloco">
+          <h3>Saladas e entradas</h3>
+          <ul>
+            <li>Saladas variadas</li>
+            <li>Caponata</li>
+          </ul>
+        </div>
+
+        <div class="cardapio-bloco">
+          <h3>Massas</h3>
+          <ul>
+            <li>Massa ao molho de tomate com manjericão</li>
+            <li>Massa alho e óleo</li>
+            <li>Massa na manteiga</li>
+            <li>Rondelli de presunto e queijo</li>
+            <li>Molho de carne</li>
+            <li>Molho de queijo</li>
+            <li>Molho sugo</li>
+          </ul>
+        </div>
+
+        <div class="cardapio-bloco">
+          <h3>Carnes</h3>
+          <ul>
+            <li>Estrogonofe de carne</li>
+            <li>Filé mignon</li>
+            <li>Galeto</li>
+            <li>Tilápia grelhada</li>
+            <li>Linguicinha</li>
+          </ul>
+        </div>
+
+        <div class="cardapio-bloco">
+          <h3>Acompanhamentos</h3>
+          <ul>
+            <li>Arroz</li>
+            <li>Feijão</li>
+            <li>Polenta frita</li>
+          </ul>
+        </div>
+
+        <p class="cardapio-nota">As opções do buffet podem variar de acordo com o dia.</p>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ========== 5. EVENTOS ========== -->
 <section id="eventos" class="eventos" aria-labelledby="h-eventos">
-  <video class="midia-fundo video-fundo" autoplay muted loop playsinline preload="none"
-         poster="web/ambiente-2.jpg" aria-hidden="true" tabindex="-1">
-    <source src="ambiente%20-%20eventos.MP4" type="video/mp4">
-  </video>
+  <img class="midia-fundo" src="web/aniversario.jpg" alt="" aria-hidden="true"
+       width="977" height="1700" loading="lazy" decoding="async">
 
   <div class="wrap">
     <h2 id="h-eventos" class="r">Sua celebração merece a Frassini</h2>
-    <p class="body r" style="--d:120ms">Na Galeteria Frassini, momentos especiais ganham um sabor ainda mais marcante. O restaurante oferece a possibilidade de reservas para eventos privados, proporcionando um espaço acolhedor para celebrar com família, amigos ou convidados especiais. Com capacidade para até 108 pessoas, é o cenário ideal para confraternizações, aniversários, encontros corporativos e outras ocasiões que merecem ser celebradas à mesa.</p>
+    <p class="body r" style="--d:120ms">Na Galeteria Frassini, momentos especiais ganham um sabor ainda mais marcante. O restaurante oferece um espaço acolhedor para eventos privados, ideal para celebrar com família, amigos ou convidados especiais, com capacidade para receber até 108 pessoas.</p>
+
+    <div class="cards-evento">
+      <article class="card-evento r">
+        <h3>Aniversários</h3>
+        <p>Celebre com quem você ama em um ambiente especial.</p>
+      </article>
+      <article class="card-evento r" style="--d:100ms">
+        <h3>Confraternizações</h3>
+        <p>Um espaço especial para reunir amigos e família.</p>
+      </article>
+      <article class="card-evento r" style="--d:200ms">
+        <h3>Eventos Corporativos</h3>
+        <p>Encontros e celebrações em um ambiente acolhedor.</p>
+      </article>
+      <article class="card-evento r" style="--d:300ms">
+        <h3>Datas Especiais</h3>
+        <p>Comemore momentos que merecem ser lembrados.</p>
+      </article>
+    </div>
+
     <a href="https://wa.me/554732488573?text=Ol%C3%A1%21%20Gostaria%20de%20agendar%20um%20evento%20na%20Galeteria%20Frassini." class="btn r" style="--d:220ms" target="_blank" rel="noopener">Agende o seu evento</a>
 
     <div class="carrossel r" data-carrossel data-infinito data-auto="5000">
@@ -753,6 +890,8 @@ section{padding-block:var(--sec)}
         <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
       </button>
     </div>
+
+    <p class="dica-arraste r">Arraste para o lado</p>
   </div>
 </section>
 
@@ -760,7 +899,8 @@ section{padding-block:var(--sec)}
 <section id="localizacao" class="local faixa-clara" aria-labelledby="h-local">
   <div class="wrap local-grid">
     <div>
-      <h2 id="h-local" class="r">Venha nos visitar</h2>
+      <h2 id="h-local" class="r">Onde encontrar a Galeteria Frassini em Itajaí</h2>
+      <p class="destaque r" style="--d:60ms">Para evitar esperas nos horários de maior movimento, recomendamos reservar sua mesa com antecedência.</p>
 
       <div class="info-block r" style="--d:100ms">
         <h3>Endereço</h3>
@@ -783,7 +923,7 @@ section{padding-block:var(--sec)}
 
       <div class="local-cta r" style="--d:280ms">
         <a href="https://maps.google.com/?cid=18179979987238950114" class="btn" target="_blank" rel="noopener">Como chegar</a>
-        <a href="https://wa.me/554732488573?text=Ol%C3%A1%21%20Gostaria%20de%20reservar%20uma%20mesa%20na%20Galeteria%20Frassini." class="btn ghost" target="_blank" rel="noopener">Reservar pelo WhatsApp</a>
+        <a href="https://wa.me/554732488573?text=Ol%C3%A1%21%20Gostaria%20de%20reservar%20uma%20mesa%20na%20Galeteria%20Frassini." class="btn ghost" target="_blank" rel="noopener">Reserve pelo WhatsApp</a>
       </div>
     </div>
 
@@ -803,7 +943,7 @@ section{padding-block:var(--sec)}
     <div class="foot-grid">
       <div>
         <span class="foot-brand"><span class="mark"><span class="ga">GALETERIA</span><span class="fr">FRASSINI</span><span class="tri"><i></i><i></i><i></i></span><span class="de">DESDE 2002</span></span></span>
-        <p>Culinária italiana e o tradicional Galeto ao Primo Canto no coração de Itajaí desde 2002.</p>
+        <p>Restaurante italiano em Itajaí com o tradicional Galeto ao Primo Canto desde 2002.</p>
       </div>
 
       <div class="foot-col">
