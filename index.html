@@ -27,7 +27,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Jost:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..700,0..100,0..1&family=Jost:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 
 <!-- Coco Gothic e Mermaid sao comerciais e nao existem no Google Fonts.
      Coloque os arquivos em fonts/ e tire o comentario abaixo: a Jost sai
@@ -108,8 +108,8 @@
 
   /* Coco Gothic no resto. Jost e o substituto ate os arquivos chegarem */
   --sans:"Coco Gothic", "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
-  /* Mermaid e comercial: ate os arquivos chegarem, o titulo segue na Jost */
-  --display:"Mermaid", "Jost", system-ui, sans-serif;
+  /* Mermaid e comercial: ate os arquivos chegarem, o titulo fica na Fraunces */
+  --display:"Mermaid", "Fraunces", "Iowan Old Style", Georgia, serif;
   --serif-marca:"Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
 
   --pad:clamp(1.25rem, 5vw, 4.5rem);
@@ -139,11 +139,20 @@ img,video{max-width:100%; display:block}
 a{color:inherit}
 
 h1,h2,h3{margin:0; text-wrap:balance}
-/* titulo do hero: Mermaid, com escala fluida entre 360px e 1280px */
+/* titulo do hero: Mermaid, com a Fraunces segurando o lugar.
+   SOFT arredonda os cantos e tira a severidade; todos os eixos vao
+   juntos porque, declarado so um, o resto volta ao padrao da fonte. */
 h1{
   font-family:var(--display); font-weight:700;
+  font-optical-sizing:none;
+  font-variation-settings:"opsz" 110, "wght" 700, "SOFT" 35, "WONK" 0;
   font-size:clamp(1.85rem, 1rem + 4.2vw, 4.4rem);
-  letter-spacing:-.02em; line-height:1.08;
+  letter-spacing:-.015em; line-height:1.08;
+}
+/* em tela pequena o titulo cai para 30px: o eixo optico acompanha,
+   senao os filetes finos somem sobre o video */
+@media (max-width:700px){
+  h1{font-variation-settings:"opsz" 40, "wght" 700, "SOFT" 45, "WONK" 0; letter-spacing:-.005em}
 }
 /* subtitulos de secao: Coco Gothic negrito */
 h2{
