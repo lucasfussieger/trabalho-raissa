@@ -29,10 +29,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Jost:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 
-<!-- Coco Gothic e fonte comercial da Zetafonts e nao existe no Google Fonts.
+<!-- Coco Gothic e Mermaid sao comerciais e nao existem no Google Fonts.
      Coloque os arquivos em fonts/ e tire o comentario abaixo: a Jost sai
-     de cena sozinha, porque a Coco Gothic vem primeiro na pilha.
+     de cena sozinha, porque as duas vem primeiro na pilha.
 <style>
+  @font-face{
+    font-family:"Mermaid"; font-style:normal; font-weight:400 700; font-display:swap;
+    src:url("fonts/Mermaid.woff2") format("woff2");
+  }
   @font-face{
     font-family:"Coco Gothic"; font-style:normal; font-weight:400; font-display:swap;
     src:url("fonts/CocoGothic.woff2") format("woff2");
@@ -104,6 +108,8 @@
 
   /* Coco Gothic no resto. Jost e o substituto ate os arquivos chegarem */
   --sans:"Coco Gothic", "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Mermaid e comercial: ate os arquivos chegarem, o titulo segue na Jost */
+  --display:"Mermaid", "Jost", system-ui, sans-serif;
   --serif-marca:"Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
 
   --pad:clamp(1.25rem, 5vw, 4.5rem);
@@ -133,17 +139,17 @@ img,video{max-width:100%; display:block}
 a{color:inherit}
 
 h1,h2,h3{margin:0; text-wrap:balance}
-/* titulo do hero: mesma fonte e mesmo peso dos subtitulos de secao */
+/* titulo do hero: Mermaid, com escala fluida entre 360px e 1280px */
 h1{
-  font-family:var(--sans); font-weight:700;
-  font-size:clamp(2.5rem, 5.4vw, 4.4rem);
-  letter-spacing:-.02em; line-height:1.06;
+  font-family:var(--display); font-weight:700;
+  font-size:clamp(1.85rem, 1rem + 4.2vw, 4.4rem);
+  letter-spacing:-.02em; line-height:1.08;
 }
 /* subtitulos de secao: Coco Gothic negrito */
 h2{
   font-family:var(--sans); font-weight:700;
-  font-size:clamp(2.15rem, 4.6vw, 3.6rem);
-  letter-spacing:-.02em; line-height:1.08;
+  font-size:clamp(1.6rem, .9rem + 3.4vw, 3.6rem);
+  letter-spacing:-.02em; line-height:1.1;
 }
 h3{
   font-family:var(--sans); font-weight:400;
@@ -259,11 +265,17 @@ section{padding-block:var(--sec)}
 .site-header .mark .fr{font-size:1.35rem}
 
 @media (max-width:760px){
-  .nav{flex-direction:column; gap:.5rem; padding-block:.7rem}
-  .nav-links{width:100%; justify-content:flex-start; gap:1.15rem}
+  :root{--header:5.2rem}
+  .nav{flex-direction:column; gap:.15rem; padding:.6rem var(--pad) .35rem; min-height:0}
+  .nav-links{width:100%; justify-content:flex-start; gap:1.1rem}
+  .nav-links a{padding:.5rem 0 .45rem}   /* area de toque confortavel */
   .site-header .mark .fr{font-size:1.15rem}
   .site-header .mark .ga{font-size:.4375rem}
-  :root{--header:5.8rem}
+}
+@media (max-width:380px){
+  .nav-links{gap:.85rem}
+  .nav-links a{font-size:.75rem; letter-spacing:.03em}
+  .site-header .mark .fr{font-size:1.05rem}
 }
 
 
@@ -272,7 +284,7 @@ section{padding-block:var(--sec)}
    ============================================================ */
 .midia-fundo{
   position:absolute; inset:0; z-index:-2;
-  width:100vw; max-width:none; height:100%;
+  width:100%; max-width:none; height:100%;
   object-fit:cover; object-position:center;
   background:var(--ink);
 }
@@ -306,6 +318,15 @@ section{padding-block:var(--sec)}
 .hero .btn.ghost{background:transparent; color:var(--bg); border-color:rgba(255,255,255,.45)}
 .hero .btn.ghost:hover{background:var(--bg); color:var(--ink); border-color:var(--bg)}
 @media (max-width:900px){ .hero{min-height:92svh} .hero h1{max-width:15ch} }
+/* no celular o limite em ch aperta mais que a propria tela */
+@media (max-width:760px){
+  .hero h1, .eventos h2{max-width:none}
+  .hero .lead, .eventos .body{max-width:none}
+}
+@media (orientation:landscape) and (max-height:560px){
+  .hero{min-height:auto; padding-block:calc(var(--header) + 2.5rem) 3rem}
+  .hero h1{max-width:24ch}
+}
 
 /* ============================================================
    FAIXAS ALTERNADAS: marrom com texto creme, creme com texto marrom
@@ -351,7 +372,7 @@ section{padding-block:var(--sec)}
    2. SELOS E NOTAS
    ============================================================ */
 .proof{padding-block:clamp(2.75rem,5vw,4rem)}
-.proof h2{font-size:clamp(1.6rem,2.8vw,2.3rem); max-width:24ch; line-height:1.12}
+.proof h2{font-size:clamp(1.35rem,.8rem + 2.1vw,2.3rem); max-width:24ch; line-height:1.15}
 .proof-grid{display:grid; justify-items:center; text-align:center; gap:1.3rem}
 .nota{
   display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:.15rem .6rem;
@@ -403,7 +424,7 @@ section{padding-block:var(--sec)}
   scrollbar-width:none; padding-bottom:.25rem;
 }
 .trilho::-webkit-scrollbar{display:none}
-.trilho > *{flex:0 0 clamp(255px, 30vw, 400px); scroll-snap-align:start}
+.trilho > *{flex:0 0 clamp(230px, 30vw, 400px); scroll-snap-align:start}
 .trilho .ph{width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:2px; background:var(--bg-2)}
 .seta{
   position:absolute; top:50%; transform:translateY(-50%); z-index:3;
@@ -527,7 +548,7 @@ section{padding-block:var(--sec)}
 /* ============================================================
    6. AVALIACOES
    ============================================================ */
-.rev-grid > .review{flex:0 0 clamp(280px, 33vw, 400px)}
+.rev-grid > .review{flex:0 0 clamp(250px, 33vw, 400px)}
 .review{
   background:rgba(244,241,237,.09); border:1px solid rgba(244,241,237,.22); border-radius:2px;
   padding:clamp(1.5rem,2.5vw,2rem); display:flex; flex-direction:column;
