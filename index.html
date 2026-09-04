@@ -104,6 +104,7 @@
   --branco:#FFFFFF;
   /* faixas alternadas */
   --marrom:#623E2A;
+  --marrom-escuro:#3F2619;
   --creme:#F4F1ED;
 
   /* Coco Gothic no resto. Jost e o substituto ate os arquivos chegarem */
@@ -494,29 +495,10 @@ section{padding-block:var(--sec)}
    5. EVENTOS
    ============================================================ */
 .eventos{
-  position:relative; isolation:isolate; overflow:hidden;
-  color:var(--branco); padding-block:clamp(5rem,10vw,8rem);
-}
-.eventos .midia-fundo{filter:blur(5px); transform:scale(1.06)}
-/* mais escuro a esquerda, onde fica o texto, e a foto respira a direita */
-.eventos::after{
-  content:""; position:absolute; inset:0; z-index:-1;
-  background:
-    linear-gradient(90deg,
-      rgba(8,6,2,.93) 0%,
-      rgba(8,6,2,.88) 28%,
-      rgba(8,6,2,.62) 58%,
-      rgba(8,6,2,.34) 82%,
-      rgba(8,6,2,.26) 100%),
-    linear-gradient(180deg, rgba(8,6,2,.50) 0%, rgba(8,6,2,.12) 38%, rgba(8,6,2,.52) 100%);
-}
-@media (max-width:900px){
-  /* na vertical o texto ocupa a largura toda, entao o escuro precisa ser parelho */
-  .eventos::after{
-    background:
-      linear-gradient(rgba(8,6,2,.72), rgba(8,6,2,.72)),
-      linear-gradient(180deg, rgba(8,6,2,.50) 0%, rgba(8,6,2,.20) 40%, rgba(8,6,2,.55) 100%);
-  }
+  background:var(--marrom-escuro);
+  color:var(--creme);
+  padding-block:clamp(5rem,10vw,8rem);
+  border-block:1px solid rgba(244,241,237,.12);
 }
 
 /* cards de tipos de evento */
@@ -534,24 +516,21 @@ section{padding-block:var(--sec)}
 .card-evento:hover{background:rgba(244,241,237,.15); border-color:rgba(244,241,237,.45); transform:translateY(-3px)}
 .card-evento h3{
   font-family:var(--sans); font-weight:700; font-size:1rem;
-  letter-spacing:.005em; margin-bottom:.55rem; color:var(--branco);
+  letter-spacing:.005em; margin-bottom:.55rem; color:var(--creme);
 }
-.card-evento p{font-size:.8125rem; line-height:1.55; color:var(--branco); opacity:.8}
+.card-evento p{font-size:.8125rem; line-height:1.55; color:var(--creme); opacity:.78}
 @media (max-width:900px){ .cards-evento{grid-template-columns:1fr 1fr} }
 @media (max-width:520px){ .cards-evento{grid-template-columns:1fr} }
-.eventos h2{max-width:16ch; text-shadow:0 1px 24px rgba(0,0,0,.4)}
-.eventos .body{
-  color:var(--branco); max-width:60ch; margin-top:1.6rem;
-  text-shadow:0 1px 18px rgba(0,0,0,.45);
-}
-.eventos .btn{background:var(--bg); color:var(--ink); border-color:var(--bg); margin-top:2.2rem}
-.eventos .btn:hover{background:transparent; color:var(--bg)}
+.eventos h2{max-width:16ch}
+.eventos .body{color:var(--creme); max-width:60ch; margin-top:1.6rem; opacity:.88}
+.eventos .btn{background:var(--creme); color:var(--marrom-escuro); border-color:var(--creme); margin-top:2.2rem}
+.eventos .btn:hover{background:transparent; color:var(--creme)}
 .eventos .carrossel{margin-top:clamp(2.5rem,5vw,3.5rem)}
 .eventos .seta{
   background:color-mix(in srgb, #0A0802 55%, transparent);
   border-color:rgba(255,255,255,.35); color:var(--branco);
 }
-.eventos .seta:hover{background:var(--bg); color:var(--ink); border-color:var(--bg)}
+.eventos .seta:hover{background:var(--creme); color:var(--marrom-escuro); border-color:var(--creme)}
 .eventos .dica-arraste{color:rgba(255,255,255,.62)}
 
 /* ============================================================
@@ -812,9 +791,6 @@ section{padding-block:var(--sec)}
 
 <!-- ========== 5. EVENTOS ========== -->
 <section id="eventos" class="eventos" aria-labelledby="h-eventos">
-  <img class="midia-fundo" src="web/aniversario.jpg" alt="" aria-hidden="true"
-       width="977" height="1700" loading="lazy" decoding="async">
-
   <div class="wrap">
     <h2 id="h-eventos" class="r">Sua celebração merece a Frassini</h2>
     <p class="body r" style="--d:120ms">Na Galeteria Frassini, momentos especiais ganham um sabor ainda mais marcante. O restaurante oferece um espaço acolhedor para eventos privados, ideal para celebrar com família, amigos ou convidados especiais, com capacidade para receber até 108 pessoas.</p>
